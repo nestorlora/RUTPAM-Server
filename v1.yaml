@@ -256,9 +256,13 @@ components:
           description: Identificador de la red
           example: 7
 
+    #Estacion
+    #TODO
+    #Grupo de paradas de la misma estación
 
     #Correspondencia
     #TODO
+    #Grupo de estaciones o paradas sueltas que están cerca
 
     #Expedicion
     #TODO
