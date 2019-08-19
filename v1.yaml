@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: "Esta es la API que provee de datos de forma centralizada 
   al visor RUTPAM. Estandariza información general de la red de transportes 
-  de múltiples formados y modelos bajo una integración general"
+  de múltiples formatos y modelos bajo una integración general"
   #termsOfService: http://example.com/terms/
   contact:
     name: Nestor Lora
