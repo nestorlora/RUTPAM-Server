@@ -146,7 +146,7 @@ components:
               type: string
               description: Color Hex de la línea
               example: 00FF00
-            color_texto:
+            colorTexto:
               type: string
               description: Color Hex del texto para los badges de la línea
               example: FFFFFF
@@ -173,7 +173,7 @@ components:
           type: string
           description: Headsign o indicacion de destino
           example: El Palo
-        description:
+        descripcion:
           type: string
           description: Descripción del sentido
           example: Ida. Itinerario 1
@@ -193,7 +193,7 @@ components:
       
     ItinerarioExtendido:
       allOf:
-      - $ref: '#/components/schemas/Linea'
+      - $ref: '#/components/schemas/Itinerario'
       - type: object
         properties:
           eid:
