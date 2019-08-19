@@ -155,6 +155,26 @@ components:
               description: >
                 Extensión de tipo de ruta GTFS.
                 Leyenda en [Google Dev](https://developers.google.com/transit/gtfs/reference/extended-route-types?hl=es)
+            fechaInicio:
+              type: string
+              format: date
+              description: >
+                Fecha en la que la línea comienza su actividad (para este id)
+                La base de datos puede contener otras versiones de la línea con otros id
+              example: "2019-08-19"
+            fechaFin:
+              type: string
+              format: date
+              description: >
+                Fecha en la que la línea comienza su actividad (para este id)
+                La base de datos puede contener otras versiones de la línea con otros id
+              example: "2019-08-19"
+          required:
+            - color
+            - colorTexto
+            - tipo
+            - fechaInicio
+            - fechaFin
 
     Itinerario:
       type: object
@@ -200,6 +220,25 @@ components:
             type: string
             description: "Identificador externo del itinerario en su red"
             example: 1037S
+          fechaInicio:
+            type: string
+            format: date
+            description: >
+              Fecha en la que la línea comienza su actividad (para este id)
+              La base de datos puede contener otras versiones del itinerario con otros id
+            example: "2019-08-19"
+          fechaFin:
+            type: string
+            format: date
+            description: >
+              Fecha en la que la línea comienza su actividad (para este id)
+              La base de datos puede contener otras versiones del itinerario con otros id
+            example: "2019-08-19"
+        required:
+          - eid
+          - fechaInicio
+          - fechaFin
+            
 
     Trazado:
       type: object
