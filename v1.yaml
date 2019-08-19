@@ -62,9 +62,9 @@ components:
           format: int32
           description: "Identificador de la red en la base de datos"
           example: 2
-        rid:
+        eid:
           type: string
-          description: "Identificador de la línea en su red"
+          description: "Identificador externo de la línea en su red"
           example: 41
         codigo:
           type: string
@@ -104,13 +104,13 @@ components:
                   example: "Regulación, Op. Flota"
           description: Listado de operadores involucrados y sus competencias en relación a la línea
       required:
-      - dbid
+      - id
       - red
-      - rid
+      - eid
       - codigo
       - nombre
       - sentidos
-            
+      - modo
     Itinerarios:
       type: object
       properties:
