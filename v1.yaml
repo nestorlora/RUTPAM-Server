@@ -111,7 +111,28 @@ components:
       - nombre
       - sentidos
       - modo
-    Itinerarios:
+      - operadores
+
+    LineaExtendida:
+      allOf:
+        - $ref: '#/components/schemas/Linea'
+        - type: object
+          properties:
+            color:
+              type: string
+              description: Color Hex de la línea
+              example: 00FF00
+            color_texto:
+              type: string
+              description: Color Hex del texto para los badges de la línea
+              example: FFFFFF
+            tipo:
+              type: string
+              description: >
+                Extensión de tipo de ruta GTFS.
+                Leyenda en [Google Dev](https://developers.google.com/transit/gtfs/reference/extended-route-types?hl=es)
+
+    Itinerario:
       type: object
       properties:
         id:
@@ -145,6 +166,16 @@ components:
             example: 651385
         trazado:
           $ref: '#/components/schemas/Trazado'
+      
+    ItinerarioExtendido:
+      allOf:
+      - $ref: '#/components/schemas/Linea'
+      - type: object
+        properties:
+          eid:
+            type: string
+            description: "Identificador externo del itinerario en su red"
+            example: 1037S
 
     Trazado:
       type: object
@@ -319,6 +350,9 @@ components:
     #Modo
 
     #Zona
+
+    #Tipo de ruta
+    #https://developers.google.com/transit/gtfs/reference/extended-route-types?hl=es
 
     LatLong:
       type: object
