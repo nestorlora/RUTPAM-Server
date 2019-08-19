@@ -204,10 +204,27 @@ components:
         paradas:
           type: array
           items:
-            type: integer
-            format: int64
-            description: Identificador de la parada en la base de datos
-            example: 651385
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+                description: Identificador de la parada en la base de datos
+                example: 651385
+              tipoSubida:
+                type: integer
+                format: int64
+                description: >
+                  Identificador del tipo de subida<br>
+                  [Programada | No disponible | Contactar empresa | Coordinar conductor]<br>
+                  Leyenda en pickup_type [Google Dev](https://developers.google.com/transit/gtfs/reference/?hl=es#stop_timestxt)
+              tipoBajada:
+                type: integer
+                format: int64
+                description: >
+                  Identificador del tipo de bajada<br>
+                  [Programada | No disponible | Contactar empresa | Coordinar conductor]<br>
+                  Leyenda en drop_off_type [Google Dev](https://developers.google.com/transit/gtfs/reference/?hl=es#stop_timestxt)
         trazado:
           $ref: '#/components/schemas/Trazado'
       required:
