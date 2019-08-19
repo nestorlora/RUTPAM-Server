@@ -29,22 +29,46 @@ servers:
 # ---------------------------------------
 
 paths:
-  /red/todas:
+  /appdb:
+    get:
+      summary: Base de Datos completa para la aplicación
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+  /linea/{id}:
     get:
       summary: ''
       description: ''
       operationId: ''
+      parameters:
+          - name: id
+            in: path
+            description: Identificador de la línea
+            required: true
+            schema:
+                type: integer
+                format: int64
       responses:
         default:
           description: Default error sample response
-    put:
+  /linea/{id}/extendida:
+    get:
       summary: ''
       description: ''
       operationId: ''
+      parameters:
+          - name: id
+            in: path
+            description: Identificador de la línea
+            required: true
+            schema:
+                type: integer
+                format: int64
       responses:
         default:
           description: Default error sample response
-  
 # ---------------------------------------
 
 components:
