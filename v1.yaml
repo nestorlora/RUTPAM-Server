@@ -210,6 +210,12 @@ components:
             example: 651385
         trazado:
           $ref: '#/components/schemas/Trazado'
+      required:
+        - id
+        - sentido
+        - destino
+        - descripcion
+        - paradas        
       
     ItinerarioExtendido:
       allOf:
