@@ -3,4 +3,6 @@
 ![GitHub](https://img.shields.io/github/license/nestorlora/rutpam-api)<br>
 [![Gitmoji](https://img.shields.io/badge/Gitmoji-%20😜%20😍-FFDD67.svg)](https://gitmoji.carloscuesta.me/)
 ![GitHub release](https://img.shields.io/github/release/nestorlora/rutpam-api.svg)<br>
-Esta es la API que provee de datos de forma centralizada al visor RUTPAM. Estandariza información general de la red de transportes de múltiples formatos y modelos bajo una integración general.
+NodeJS server and REST API that provide centralized access, storage, and processing to multiple transit networks.
+
+Servidor NodeJS y API REST para proveer de forma centralizada acceso, almacenamiento y procesado de múltiples redes de transporte de pasajeros.
