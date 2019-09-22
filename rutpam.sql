@@ -4,7 +4,7 @@
  * Testeado en: MySQL, PosgreSQL
  *
  * @author Nestor Lora
- * @version 1
+ * @version 2
  */
  
 DROP TABLE IF EXISTS redes;
@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS operadores_lineas;
 DROP TABLE IF EXISTS tipos_itinerario;
 DROP TABLE IF EXISTS itinerarios;
 DROP TABLE IF EXISTS trazados;
-DROP TABLE IF EXISTS itinerarios_trazados;
 DROP TABLE IF EXISTS zonas;
 DROP TABLE IF EXISTS municipios;
 DROP TABLE IF EXISTS nucleos;
@@ -79,25 +78,21 @@ CREATE TABLE IF NOT EXISTS tipos_itinerario (
     tipo VARCHAR(50) NOT NULL,
     descripcion VARCHAR(255) NULL
 );
+CREATE TABLE IF NOT EXISTS trazados (
+  id SERIAL PRIMARY KEY,
+  color VARCHAR(7) NULL,
+  transparencia DECIMAL(3,2) NULL
+);
 CREATE TABLE IF NOT EXISTS itinerarios (
   id SERIAL PRIMARY KEY,
   linea INTEGER NOT NULL REFERENCES lineas (id),
   eid VARCHAR(50) NULL,
   tipo INTEGER NOT NULL REFERENCES tipos_itinerario (id),
   destino VARCHAR(100) NOT NULL,
+  trazado INTEGER REFERENCES trazados (id),
   descripcion VARCHAR(255) NULL,
   fecha_comienzo TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   fecha_fin TIMESTAMP NULL 
-);
-CREATE TABLE IF NOT EXISTS trazados (
-  id SERIAL PRIMARY KEY,
-  color VARCHAR(7) NULL,
-  transparencia DECIMAL(3,2) NULL
-);
-CREATE TABLE IF NOT EXISTS itinerarios_trazados (
-  id SERIAL PRIMARY KEY,
-  itinerario INTEGER NOT NULL REFERENCES itinerarios (id),
-  trazado INTEGER NOT NULL REFERENCES trazados (id)
 );
 CREATE TABLE IF NOT EXISTS zonas (
   id SERIAL PRIMARY KEY,
