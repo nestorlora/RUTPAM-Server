@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "port": 5000,
+    "name": "RUTPAM",
+    "admin": "rutpam@geeklab.es",
+    "web": null,
+    "maintenance": false,
+
+    "dbhost": "localhost",
+    "dbuser": "rutpam",
+    "dbpass": "rutpam",
+    "dbname": "rutpam",
+    "dbport": 3306
+}
