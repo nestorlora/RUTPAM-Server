@@ -1,0 +1,31 @@
+{
+  "name": "rutpam-server",
+  "version": "1.0.0",
+  "description": "Server with REST API that provide centraliced access, changelog storage and processing to multiple transit networks",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nestorlora/RUTPAM-Server.git"
+  },
+  "keywords": [
+    "Transit",
+    "REST",
+    "API"
+  ],
+  "author": "Néstor Lora",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nestorlora/RUTPAM-Server/issues"
+  },
+  "homepage": "https://github.com/nestorlora/RUTPAM-Server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1",
+    "passport": "^0.4.0"
+  }
+}
