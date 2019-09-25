@@ -1,223 +1,224 @@
 /** 
- * Script de configuración de la BBDD de RUTPAM_Server
- * Este código funciona en los principales servidores SQL, está escrito siguiendo el estándar
- * Testeado en: MySQL, PosgreSQL
+ * Basic DB setup script
+ * This script works on all major sql servers, it was writed following the sql standard
+ * Tested in: MySQL, PosgreSQL
  *
  * @author Nestor Lora
- * @version 2
+ * @version 3
  */
  
-DROP TABLE IF EXISTS redes;
-DROP TABLE IF EXISTS tipo_linea_gtfs;
-DROP TABLE IF EXISTS lineas;
-DROP TABLE IF EXISTS operadores;
-DROP TABLE IF EXISTS roles_operador;
-DROP TABLE IF EXISTS operadores_lineas;
-DROP TABLE IF EXISTS tipos_itinerario;
-DROP TABLE IF EXISTS itinerarios;
-DROP TABLE IF EXISTS trazados;
-DROP TABLE IF EXISTS zonas;
-DROP TABLE IF EXISTS municipios;
-DROP TABLE IF EXISTS nucleos;
-DROP TABLE IF EXISTS estaciones;
-DROP TABLE IF EXISTS paradas;
-DROP TABLE IF EXISTS tipos_subida_bajada;
-DROP TABLE IF EXISTS paradas_itinerario;
-DROP TABLE IF EXISTS tipos_transbordo;
-DROP TABLE IF EXISTS transbordos;
-DROP TABLE IF EXISTS puntos;
-DROP TABLE IF EXISTS puntos_trazado;
-DROP TABLE IF EXISTS tipos_informacion;
-DROP TABLE IF EXISTS informacion_operadores;
-DROP TABLE IF EXISTS tipos_punto_venta;
-DROP TABLE IF EXISTS puntos_venta;
+DROP TABLE IF EXISTS networks;
+DROP TABLE IF EXISTS route_types;
+DROP TABLE IF EXISTS routes;
+DROP TABLE IF EXISTS agencies;
+DROP TABLE IF EXISTS agency_roles;
+DROP TABLE IF EXISTS routes_agencies;
+DROP TABLE IF EXISTS subroute_types;
+DROP TABLE IF EXISTS subroutes;
+DROP TABLE IF EXISTS paths;
+DROP TABLE IF EXISTS zones;
+DROP TABLE IF EXISTS towns;
+DROP TABLE IF EXISTS town_areas;
+DROP TABLE IF EXISTS stations;
+DROP TABLE IF EXISTS stops;
+DROP TABLE IF EXISTS pickup_dropoff_types;
+DROP TABLE IF EXISTS subroute_stops;
+DROP TABLE IF EXISTS tranfer_types;
+DROP TABLE IF EXISTS transfers;
+DROP TABLE IF EXISTS points;
+DROP TABLE IF EXISTS path_points;
+DROP TABLE IF EXISTS info_types;
+DROP TABLE IF EXISTS agencies_info;
+DROP TABLE IF EXISTS pos_types;
+DROP TABLE IF EXISTS pos;
 
-CREATE TABLE IF NOT EXISTS redes (
+CREATE TABLE IF NOT EXISTS networks (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL
+  short_name VARCHAR(50) NULL,
+  long_name VARCHAR(100) NULL
 );
-CREATE TABLE IF NOT EXISTS tipo_linea_gtfs (
+CREATE TABLE IF NOT EXISTS route_types (
   id SERIAL PRIMARY KEY,
-  descripcion VARCHAR(50) NOT NULL,
-  ejemplos VARCHAR(255) NULL
+  description VARCHAR(50) NOT NULL,
+  example VARCHAR(255) NULL
 );
-CREATE TABLE IF NOT EXISTS lineas (
+CREATE TABLE IF NOT EXISTS routes (
   id SERIAL PRIMARY KEY,
-  red INTEGER NOT NULL REFERENCES redes (id),
+  network INTEGER NOT NULL REFERENCES networks (id),
   eid VARCHAR(50) NULL,
-  codigo VARCHAR(50) NULL,
-  nombre VARCHAR(100) NOT NULL,
-  observaciones VARCHAR(255) NULL,
-  fecha_comienzo TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  fecha_fin TIMESTAMP NULL,
+  short_name VARCHAR(50) NULL,
+  long_name VARCHAR(100) NOT NULL,
+  observations VARCHAR(255) NULL,
+  start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_date TIMESTAMP NULL,
   color VARCHAR(7) NULL,
-  color_texto VARCHAR(7) NULL,
+  text_color VARCHAR(7) NULL,
   url VARCHAR(255) NULL,
-  tipo_gtfs INTEGER NOT NULL REFERENCES tipo_linea_gtfs (id)
+  type INTEGER NOT NULL REFERENCES route_types (id)
 );
-CREATE TABLE IF NOT EXISTS operadores (
+CREATE TABLE IF NOT EXISTS agencies (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(70) NOT NULL
+  name VARCHAR(70) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS roles_operador (
+CREATE TABLE IF NOT EXISTS agency_roles (
     id SERIAL PRIMARY KEY,
-    rol VARCHAR(50) NOT NULL,
-    descripcion VARCHAR(255) NULL 
+    role VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NULL 
 );
 
-CREATE TABLE IF NOT EXISTS operadores_lineas (
+CREATE TABLE IF NOT EXISTS routes_agencies (
   id SERIAL PRIMARY KEY,
-  linea INTEGER NOT NULL REFERENCES lineas (id),
-  operador INTEGER NOT NULL REFERENCES operadores (id),
-  rol INTEGER NOT NULL DEFAULT 1 REFERENCES roles_operador (id),
-  fecha_comienzo TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  fecha_fin TIMESTAMP NULL 
+  route INTEGER NOT NULL REFERENCES routes (id),
+  agency INTEGER NOT NULL REFERENCES agencies (id),
+  role INTEGER NOT NULL DEFAULT 1 REFERENCES agency_roles (id),
+  start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_date TIMESTAMP NULL 
 );
-CREATE TABLE IF NOT EXISTS tipos_itinerario (
+CREATE TABLE IF NOT EXISTS subroute_types (
     id SERIAL PRIMARY KEY,
-    tipo VARCHAR(50) NOT NULL,
-    descripcion VARCHAR(255) NULL
+    type VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NULL
 );
-CREATE TABLE IF NOT EXISTS trazados (
+CREATE TABLE IF NOT EXISTS paths (
   id SERIAL PRIMARY KEY,
   color VARCHAR(7) NULL,
-  transparencia DECIMAL(3,2) NULL
+  transparency DECIMAL(3,2) NULL
 );
-CREATE TABLE IF NOT EXISTS itinerarios (
+CREATE TABLE IF NOT EXISTS subroutes (
   id SERIAL PRIMARY KEY,
-  linea INTEGER NOT NULL REFERENCES lineas (id),
+  route INTEGER NOT NULL REFERENCES routes (id),
   eid VARCHAR(50) NULL,
-  tipo INTEGER NOT NULL REFERENCES tipos_itinerario (id),
-  destino VARCHAR(100) NOT NULL,
-  trazado INTEGER REFERENCES trazados (id),
-  descripcion VARCHAR(255) NULL,
-  fecha_comienzo TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  fecha_fin TIMESTAMP NULL 
+  type INTEGER NOT NULL REFERENCES subroute_types (id),
+  headsign VARCHAR(100) NOT NULL,
+  path INTEGER NULL REFERENCES paths (id),
+  description VARCHAR(255) NULL,
+  start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_date TIMESTAMP NULL 
 );
-CREATE TABLE IF NOT EXISTS zonas (
+CREATE TABLE IF NOT EXISTS zones (
   id SERIAL PRIMARY KEY,
-  red INTEGER NOT NULL REFERENCES redes (id),
-  nombre VARCHAR(20) NOT NULL
+  network INTEGER NOT NULL REFERENCES networks (id),
+  name VARCHAR(20) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS municipios (
+CREATE TABLE IF NOT EXISTS towns (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL
+  name VARCHAR(50) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS nucleos (
+CREATE TABLE IF NOT EXISTS town_areas (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL,
-  municipio INTEGER NOT NULL REFERENCES municipios (id)
+  name VARCHAR(50) NOT NULL,
+  area INTEGER NOT NULL REFERENCES towns (id)
 );
-CREATE TABLE IF NOT EXISTS estaciones (
+CREATE TABLE IF NOT EXISTS stations (
   id SERIAL PRIMARY KEY,
   eid VARCHAR(50) NULL ,
-  nombre VARCHAR(100) NOT NULL,
-  direccion VARCHAR(100) NULL,
+  name VARCHAR(100) NOT NULL,
+  address VARCHAR(100) NULL,
   lat DECIMAL(10,6) NOT NULL,
   lon DECIMAL(10,6) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS paradas (
+CREATE TABLE IF NOT EXISTS stops (
   id SERIAL PRIMARY KEY,
   eid VARCHAR(50) NULL ,
-  nombre VARCHAR(100) NOT NULL,
-  nucleo INTEGER NULL  REFERENCES nucleos (id),
-  estacion INTEGER NULL  REFERENCES estaciones (id),
-  plataforma VARCHAR(10) NULL ,
-  red INTEGER NOT NULL REFERENCES redes (id),
-  zona INTEGER NULL REFERENCES zonas (id),
-  direccion VARCHAR(100) NULL,
+  name VARCHAR(100) NOT NULL,
+  area INTEGER NULL  REFERENCES town_areas (id),
+  station INTEGER NULL  REFERENCES stations (id),
+  platform VARCHAR(10) NULL ,
+  network INTEGER NOT NULL REFERENCES networks (id),
+  zone INTEGER NULL REFERENCES zones (id),
+  address VARCHAR(100) NULL,
   lat DECIMAL(10,6) NOT NULL,
   lon DECIMAL(10,6) NOT NULL,
-  fecha_comienzo TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  fecha_fin TIMESTAMP NULL 
+  start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_date TIMESTAMP NULL 
 );
-CREATE TABLE IF NOT EXISTS tipos_subida_bajada (
+CREATE TABLE IF NOT EXISTS pickup_dropoff_types (
     id SERIAL PRIMARY KEY,
-    tipo VARCHAR(50) NOT NULL,
-    descripcion VARCHAR(255) NULL 
+    type VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NULL 
 );
 
-CREATE TABLE IF NOT EXISTS paradas_itinerario (
+CREATE TABLE IF NOT EXISTS subroute_stops (
   id SERIAL PRIMARY KEY,
-  itinerario INTEGER NOT NULL REFERENCES itinerarios (id),
-  parada INTEGER NOT NULL REFERENCES paradas (id),
-  tipo_subida INTEGER NOT NULL DEFAULT 1 REFERENCES tipos_subida_bajada (id),
-  tipo_bajada INTEGER NOT NULL DEFAULT 1 REFERENCES tipos_subida_bajada (id),
-  orden INTEGER NOT NULL
+  subroute INTEGER NOT NULL REFERENCES subroutes (id),
+  stop INTEGER NOT NULL REFERENCES stops (id),
+  pickup_type INTEGER NOT NULL DEFAULT 1 REFERENCES pickup_dropoff_types (id),
+  dropoff_type INTEGER NOT NULL DEFAULT 1 REFERENCES pickup_dropoff_types (id),
+  sequence INTEGER NOT NULL
 );
-CREATE TABLE IF NOT EXISTS tipos_transbordo (
+CREATE TABLE IF NOT EXISTS tranfer_types (
     id SERIAL PRIMARY KEY,
-    tipo VARCHAR(50) NOT NULL,
-    descripcion VARCHAR(255) NULL
+    type VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NULL
 );
-CREATE TABLE IF NOT EXISTS transbordos (
+CREATE TABLE IF NOT EXISTS transfers (
   id SERIAL PRIMARY KEY,
-  parada1 INTEGER NOT NULL REFERENCES paradas (id),
-  parada2 INTEGER NOT NULL REFERENCES paradas (id),
-  tipo INTEGER NOT NULL DEFAULT 1 REFERENCES tipos_transbordo (id),
-  tiempo_minimo INTEGER NULL
+  stop1 INTEGER NOT NULL REFERENCES stops (id),
+  stop2 INTEGER NOT NULL REFERENCES stops (id),
+  type INTEGER NOT NULL DEFAULT 1 REFERENCES tranfer_types (id),
+  minimun_time INTEGER NULL
 );
-CREATE TABLE IF NOT EXISTS puntos (
+CREATE TABLE IF NOT EXISTS points (
   id SERIAL PRIMARY KEY,
   lat DECIMAL(10,6) NOT NULL,
   lon DECIMAL(10,6) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS puntos_trazado (
+CREATE TABLE IF NOT EXISTS path_points (
   id SERIAL PRIMARY KEY,
-  trazado INTEGER NOT NULL REFERENCES trazados (id),
-  punto INTEGER NOT NULL REFERENCES puntos (id),
-  orden INTEGER NOT NULL
+  path INTEGER NOT NULL REFERENCES paths (id),
+  pnt INTEGER NOT NULL REFERENCES points (id),
+  sequence INTEGER NOT NULL
 );
-CREATE TABLE IF NOT EXISTS tipos_informacion (
+CREATE TABLE IF NOT EXISTS info_types (
     id SERIAL PRIMARY KEY,
-    tipo VARCHAR(50) NOT NULL
+    type VARCHAR(50) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS informacion_operadores (
+CREATE TABLE IF NOT EXISTS agencies_info (
   id SERIAL PRIMARY KEY,
-  operador INTEGER NOT NULL REFERENCES operadores (id),
-  tipo INTEGER NOT NULL REFERENCES tipos_informacion (id),
-  informacion VARCHAR(255) NOT NULL,
-  descripcion VARCHAR(255) NULL 
+  agency INTEGER NOT NULL REFERENCES agencies (id),
+  type INTEGER NOT NULL REFERENCES info_types (id),
+  information VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NULL 
 );
-CREATE TABLE IF NOT EXISTS tipos_punto_venta (
+CREATE TABLE IF NOT EXISTS pos_types (
   id SERIAL PRIMARY KEY,
-  tipo VARCHAR(40) NOT NULL
+  type VARCHAR(40) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS puntos_venta (
+CREATE TABLE IF NOT EXISTS pos (
   id SERIAL PRIMARY KEY,
-  operador INTEGER NOT NULL REFERENCES operadores (id),
-  nucleo INTEGER NULL REFERENCES nucleos (id),
-  tipo INTEGER NOT NULL REFERENCES tipos_punto_venta (id),
-  direccion VARCHAR(100) NULL,
+  agency INTEGER NOT NULL REFERENCES agencies (id),
+  area INTEGER NULL REFERENCES town_areas (id),
+  type INTEGER NOT NULL REFERENCES pos_types (id),
+  address VARCHAR(100) NULL,
   lat DECIMAL(10,6) NOT NULL,
   lon DECIMAL(10,6) NOT NULL
 );
 
-INSERT INTO roles_operador (rol, descripcion) VALUES
-('Operador','Por defecto, el rol habitual de un operador'),
-('Regulación','El operador regula el cumplimiento de los horarios así como las situaciones especiales'),
-('Operación de flota','El operador mantiene los vehículos y es responsable de los conductores'),
+INSERT INTO agency_roles (role, description) VALUES
+('Operador','Por defecto, el role habitual de un agency'),
+('Regulación','El agency regula el cumplimiento de los horarios así como las situaciones especiales'),
+('Operación de flota','El agency mantiene los vehículos y es responsable de los conductores'),
 ('Planificación','Modificaciones del recorrido y los horarios'),
 ('Billetaje','Gestión del sistema de títulos y abonos de viaje'),
 ('Otro','Otros roles');
-INSERT INTO tipos_itinerario (tipo, descripcion) VALUES
+INSERT INTO subroute_types (type, description) VALUES
 ('Ida',''),
 ('Vuelta',''),
 ('Circular','La línea tiene solo un sentido'),
 ('Posicionamiento','Movimientos de vehículos sin pasajeros'),
 ('Desconocido','No hay información disponible');
-INSERT INTO tipos_subida_bajada (tipo, descripcion) VALUES
-('Desconocido','No hay información sobre el tipo de parada'),
+INSERT INTO pickup_dropoff_types (type, description) VALUES
+('Desconocido','No hay información sobre el type de parada'),
 ('Programada','El vehículo tiene programada la parada'),
 ('No disponible','La parada no está disponible'),
 ('Concertada','Es necesario avisar a la empresa para realizar la parada'),
 ('Avisar conductor','Es necesario avisar al conductor para realizar la parada'),
 ('Obligatoria','Es obligatorio bajar del vehículo');
-INSERT INTO tipos_transbordo (tipo, descripcion) VALUES
-('Defecto','No hay información disponible sobre el tipo de transbordo'),
+INSERT INTO tranfer_types (type, description) VALUES
+('Defecto','No hay información disponible sobre el type de transbordo'),
 ('Recomendado','Se puede y se recomienda realizar este transbordo'),
 ('Programado','El vehículo espera a los viajeros que van a transbordar'),
 ('Necesita tiempo','Se puede transbordar siempre que se haya un tiempo mínimo antes de la salida'),
 ('Prohibido','No está permitido este transbordo');
-INSERT INTO tipos_transbordo (tipo) VALUES
-('Teléfono'),('Dirección'),('Correo electrónico'),('URL'),('Ubicación'),('Nombre alternativo');
+INSERT INTO info_types (type) VALUES
+('Teléfono'),('Dirección'),('Correo electrónico'),('URL'),('Ubicación'),('name alternativo');
