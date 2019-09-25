@@ -1,8 +1,8 @@
 'use strict';
+// Imports
 const config = require('./config.json');
 var mysql = require('mysql');
-
-// Creamos la conexión
+// Definition of the connection
 var connection = mysql.createConnection({
     host: config.dbhost,
     port: config.dbport,
@@ -10,9 +10,9 @@ var connection = mysql.createConnection({
     password: config.dbpass,
     database: config.dbname
 });
-
+// Opening the connection
 connection.connect(function(err){
     if(err) throw err;
 });
-
+// Exports
 module.exports = connection;
