@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: RUTPAM API
-  version: 0.1.0
+  version: 0.2.0
   description: >
     Esta API provee y lee datos de forma centralizada  al servidor RUTPAM.
     Estandariza información general de la red de transportes  de múltiples
@@ -52,6 +52,14 @@ paths:
     get:
       summary: Obtener tipos de subida y bajada
       description: Devuelve la tabla de tipos de subida y bajada
+      parameters:
+        - in: query
+          name: id
+          description: ID del tipo
+          required: false
+          schema:
+            type: integer
+            format: int32
       responses:
         '200':
           description: OK
@@ -63,16 +71,14 @@ paths:
                   $ref: '#/components/schemas/Linea'
       tags:
         - DB
-  /tipos_subida_bajada/{id}:
-    summary: Tipos de subidas y bajadas en paradas
-    get:
+    post:
       summary: Obtener tipos de subida y bajada
       description: Devuelve la tabla de tipos de subida y bajada
       parameters:
-        - name: id
-          in: path
+        - in: query
+          name: id
           description: ID del tipo
-          required: true
+          required: false
           schema:
             type: integer
             format: int32
