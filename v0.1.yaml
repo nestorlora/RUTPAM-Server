@@ -74,6 +74,9 @@ paths:
     post:
       summary: Obtener tipos de subida y bajada
       description: Devuelve la tabla de tipos de subida y bajada
+      security:
+        - Agent: []
+        - Admin: []
       parameters:
         - in: query
           name: id
@@ -91,6 +94,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tipo_subida_bajada'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
       tags:
         - DB
 components:
@@ -686,19 +691,36 @@ components:
       required:
         - lat
         - lon
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          format: int32
+          example: 404
+        status:
+          type: string
+          example: 'User not found'
   securitySchemes:
-    Token:
+    User:
       type: apiKey
-      in: header
-      name: RUTPAM-Token
-    AgentKey:
+      in: query
+      name: userKey
+    Agent:
       type: apiKey
-      in: header
-      name: RUTPAM-Agent
-    AdminKey:
+      in: query
+      name: agentKey
+    Admin:
       type: apiKey
-      in: header
-      name: RUTPAM-Admin
+      in: query
+      name: opKey
+  responses:
+    401Unauthorized:
+      description: Unauthorized (Token key is not provided, is invalid, or is expired)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
 tags:
   - name: Información
     description: Información general de la instancia
