@@ -68,7 +68,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Linea'
+                  $ref: '#/components/schemas/Tipo_subida_bajada'
       tags:
         - DB
     post:
