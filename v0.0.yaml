@@ -1,7 +1,8 @@
+## WARMING! - THIS FILE IS DEPRECATED - IT'S ONLY FOR DEV PURPOSES
 openapi: 3.0.1
 info:
   title: RUTPAM API
-  version: 1.0.0
+  version: 0.0.0-alpha
   description: "Esta es la API que provee de datos de forma centralizada 
   al visor RUTPAM. Estandariza información general de la red de transportes 
   de múltiples formatos y modelos bajo una integración general"
