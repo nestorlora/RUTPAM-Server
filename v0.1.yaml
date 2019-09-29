@@ -3,24 +3,22 @@ info:
   title: RUTPAM API
   version: 0.2.0
   description: >
-    Esta API provee y lee datos de forma centralizada  al servidor RUTPAM.
-    Estandariza información general de la red de transportes  de múltiples
-    formatos y modelos bajo una integración general
+    This API defines the methods and objects that provide and receive data from/to the server.
+    The design extends the GTFS specification to a more abstract and complete knowledge base about the stored public transit networks.
   contact:
-    name: Nestor Lora
+    name: Néstor Lora
     email: nestorlora@geeklab.es
   license:
     name: MIT
 servers:
   - url: 'http://rutpam.titan.geeklab.es:5000'
-    description: Servidor de desarrollo HTTP
+    description: Development local HTTP Server
 paths:
   /info:
-    summary: Información del servidor
+    summary: Server information
     get:
-      summary: Obtener información
-      description: Devuelve la información de la instancia
-      operationId: get_info
+      summary: Getting the server status
+      description: Returns server information
       responses:
         '200':
           description: OK
@@ -31,31 +29,31 @@ paths:
                 properties:
                   version:
                     type: string
-                    description: Versión del servidor
+                    description: Server version
                     example: 1.0.0
-                  contacto:
+                  contact:
                     type: string
-                    description: Email de contacto
+                    description: Email contact
                     example: webmaster@localhost
                   web:
                     type: string
-                    description: Sitio web
+                    description: Project website
                     example: 'http://localhost/RUTPAM'
-                  mantenimiento:
+                  maintenance:
                     type: boolean
-                    description: Indica si el servidor está en mantenimiento
+                    description: Show if the server may contain inaccurate information due to maintenance works
                     example: false
       tags:
-        - Información
-  /tipos_subida_bajada:
-    summary: Tipos de subidas y bajadas en paradas
+        - Information
+  /pickup_dropoff_types:
+    summary: Defined pick-up and drop-off operations in stops
     get:
-      summary: Obtener tipos de subida y bajada
-      description: Devuelve la tabla de tipos de subida y bajada
+      summary: Get types
+      description: Returns the complete table or single element
       parameters:
         - in: query
           name: id
-          description: ID del tipo
+          description: Type ID
           required: false
           schema:
             type: integer
@@ -68,19 +66,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Tipo_subida_bajada'
+                  $ref: '#/components/schemas/PickupDropoffType'
       tags:
         - DB
     post:
-      summary: Obtener tipos de subida y bajada
-      description: Devuelve la tabla de tipos de subida y bajada
+      summary: Get types
+      description: Returns the complete table or single element
       security:
         - Agent: []
         - Admin: []
       parameters:
         - in: query
           name: id
-          description: ID del tipo
+          description: Type ID
           required: false
           schema:
             type: integer
@@ -93,589 +91,555 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Tipo_subida_bajada'
+                  $ref: '#/components/schemas/PickupDropoffType'
         '401':
           $ref: '#/components/responses/401Unauthorized'
       tags:
         - DB
 components:
   schemas:
-    Estacion:
+    Station:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador de la estación en la base de datos
+          description: Station ID
           example: 134846
         eid:
           type: string
-          description: Identificador externo de la estación en su red
+          description: External ID (defined by the provider)
           example: 41
-        nombre:
+        name:
           type: string
-          description: Nombre de la parada
+          description: Station name
           example: Málaga-María Zambrano
-        direccion:
+        address:
           type: string
-          description: Dirección postal de la parada (si la tiene)
+          description: Station address (if it has one)
           example: Paseo del Parque 21
-        ubicacion:
+        location:
           $ref: '#/components/schemas/LatLong'
-    Informacion_operador:
+    AgencyInfo:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador de la relación en la base de datos
+          description: Relation ID
           example: 134846
-        operador:
+        agency:
           type: integer
           format: int64
-          description: Identificador del operador en la base de datos
+          description: Agency ID
           example: 134846
-        tipo:
+        type:
           type: integer
           format: int64
-          description: Identificador del tipo en la base de datos
+          description: Info type ID
           example: 134846
-        informacion:
+        information:
           type: string
-          description: Información perteneciente al operador
+          description: Actual piece of information
           example: reservas@malaga.avanzabus.es
-        descripcion:
+        description:
           type: string
-          description: Información adicional referida al dato anterior
+          description: Complement to the previous information
           example: Reservas
-    Itinerario:
+    Subroute:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del itinerario en la base de datos
+          description: Subroute ID
           example: 1654135
-        linea:
+        route:
           type: integer
           format: int64
-          description: Identificador de la línea en la base de datos
+          description: Parent route ID
           example: 134846
         eid:
           type: string
-          description: Identificador externo del itinerario en su red
+          description: External ID (defined by the provider)
           example: '41.5'
-        tipo:
+        type:
           type: integer
           format: int64
-          description: Identificador del sentido (Ida/Vuelta/Circular/Posicionamiento)
+          description: Subroute type ID (Going route/Return route/Circular route/Positioning move)
           example: 1
-        destino:
+        headsign:
           type: string
-          description: Headsign o indicacion de destino
+          description: Headsign indication text
           example: El Palo
-        descripcion:
+        description:
           type: string
-          description: Descripción del sentido
+          description: Subroute description
           example: Ida. Itinerario 1
-        fechaInicio:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-        fechaFin:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-    Linea:
+        startDate:
+          $ref: '#/components/schemas/startDate'
+        endDate:
+          $ref: '#/components/schemas/endDate'
+    Route:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador de la línea en la base de datos
+          description: Route ID
           example: 134846
-        red:
+        network:
           type: integer
           format: int32
-          description: Identificador de la red en la base de datos
+          description: Network ID
           example: 2
         eid:
           type: string
-          description: Identificador externo de la línea en su red
+          description: External ID (defined by the provider)
           example: 41
-        codigo:
+        shortName:
           type: string
-          description: Nombre corto o código que ven los viajeros
+          description: >
+            Short name of a route. This will often be a short, abstract identifier like "32", "100X", or "Green" that riders use to identify a route, but which doesn't give any indication of what places the route serves.
           example: N1
-        nombre:
+        longName:
           type: string
-          description: Nombre de la línea
+          description: >
+            Full name of a route. This name is generally more descriptive than the shortName and often includes the route's destination or stop.
           example: Puerta Blanca - Alameda Principal - El Palo
-        observaciones:
+        description:
           type: string
-          description: Información adicional sobre la línea
+          description: >
+            Description of a route that provides useful, quality information.
+            Do not simply duplicate the name of the route.
+          example: >
+            "A" trains operate between Inwood-207 St, Manhattan and Far Rockaway-Mott Avenue, Queens at all times. Also from about 6AM until about midnight, additional "A" trains operate between Inwood-207 St and Lefferts Boulevard (trains typically alternate between Lefferts Blvd and Far Rockaway).
+        observations:
+          type: string
+          description: Aditional comments, informal data.
           example: Traslado de paradas por obras en Alameda Ppal
-        fechaInicio:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-        fechaFin:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
+        startDate:
+          $ref: '#/components/schemas/startDate'
+        endDate:
+          $ref: '#/components/schemas/endDate'
         color:
           type: string
-          description: Color Hex de la línea
+          description: Route color designation that matches public facing material
           example: 00FF00
-        colorTexto:
+        textColor:
           type: string
-          description: Color Hex del texto para los badges de la línea
+          description: Legible color to use for text drawn against a background of the previous color
           example: FFFFFF
         url:
           type: string
-          description: URL con información de la línea
-          example: 'https://emtmalaga.es'
-        tipo_gtfs:
+          description: URL of a web page about the particular route.
+          example: 'https://emtmalaga.es/linea/65'
+        type:
           type: integer
           format: int32
           description: >
-            Extensión de tipo de ruta GTFS. Leyenda en [Google
+            Indicates the type of transportation used on a route [Google
             Dev](https://developers.google.com/transit/gtfs/reference/extended-route-types?hl=es)
           example: 7200
-    Municipio:
+    Town:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del municipio en la base de datos
+          description: Town ID
           example: 134846
-        nombre:
+        name:
           type: string
-          description: Nombre del municipio
+          description: Town name
           example: Álora
-    Nucleo:
+    TownArea:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del núcleo en la base de datos
+          description: Town area ID
           example: 134846
-        nombre:
+        name:
           type: string
-          description: Nombre del núcleo
-          example: Aeropuerto
-        municipio:
+          description: Area name
+          example: Airport
+        town:
           type: integer
           format: int64
-          description: Identificador del municipio en la base de datos
+          description: Parent Town ID
           example: 134846
-    Operador:
+    Agency:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del operador
+          description: Agency ID
           example: 5
-        nombre:
+        name:
           type: string
-          description: Nombre del operador
+          description: Agency name
           example: 'Avanza Movilidad Urbana, S.L.U'
-    Operadores_linea:
+    RouteAgencies:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del operador
+          description: Relation ID
           example: 5
-        linea:
+        route:
           type: integer
           format: int64
-          description: Identificador de la línea en la base de datos
+          description: Route ID
           example: 134846
-        operador:
+        agency:
           type: integer
           format: int32
-          description: Identificador del operador
+          description: Agency ID
           example: 5
-        rol:
+        role:
           type: integer
           format: int32
-          description: Identificador del rol
+          description: Agency role ID
           example: 5
-        fechaInicio:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-        fechaFin:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-    Parada:
+        startDate:
+          $ref: '#/components/schemas/startDate'
+        endDate:
+          $ref: '#/components/schemas/endDate'
+    Stop:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador de la parada en la base de datos
+          description: Stop ID
           example: 5423
         eid:
           type: string
-          description: Identificador externo de la parada en su red
+          description: External ID (defined by the provider)
           example: 41
-        nombre:
+        name:
           type: string
-          description: Nombre de la parada
+          description: Stop name. Usually describes the location around the stop.
           example: Alameda Principal - Sur
-        nucleo:
+        townArea:
           type: integer
           format: int32
-          description: Identificador del núcleo al que pertenece la parada
+          description: Town area ID
           example: 175
-        estacion:
+        station:
           type: integer
           format: int64
-          description: >-
-            Identificador de la estación a la que pertenece esta parada (si la
-            hay)
+          description: Parent station ID (if exists)
           example: 134846
-        plataforma:
+        platform:
           type: string
-          description: Nombre/texto/referencia del andén o plataforma dentro de la estación
+          description: >
+            Platform identifier for a platform stop (a stop belonging to a station). 
+            This should be just the platform identifier (eg. "G" or "3"). Words like “platform” 
+            or "track" should not be included.
           example: 4B
-        red:
+        network:
           type: integer
           format: int64
-          description: Identificador de la red
+          description: Network ID
           example: 7
-        zona:
+        zone:
           type: integer
           format: int32
-          description: Identificador de la zona a la que pertenece la parada
+          description: Zone ID
           example: 3
-        direccion:
+        address:
           type: string
-          description: Dirección postal de la parada (si la tiene)
+          description: Station address (if it has one)
           example: Paseo del Parque 21
-        ubicacion:
+        location:
           $ref: '#/components/schemas/LatLong'
-        fechaInicio:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-        fechaFin:
-          type: string
-          format: date-time
-          description: >
-            Fecha en la que la línea comienza su actividad (para este id) La
-            base de datos puede contener otras versiones de la línea con otros
-            id
-          example: '2019-08-19'
-    Paradas_itinerario:
+        startDate:
+          $ref: '#/components/schemas/startDate'
+        endDate:
+          $ref: '#/components/schemas/endDate'
+    SubrouteStop:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador de la relacion
+          description: Relation ID
           example: 5654
-        itinerario:
+        subroute:
           type: integer
           format: int64
-          description: Identificador del itinerario en la base de datos
+          description: Subroute ID
           example: 1654135
-        parada:
+        stop:
           type: integer
           format: int32
-          description: Identificador de la parada en la base de datos
+          description: Stop ID
           example: 5423
-        tipo_subida:
+        pickupType:
           type: integer
           format: int32
-          description: Identificador del tipo de subida/bajada
+          description: Pickup or Drop off type ID
           example: 56
-        tipo_bajada:
+        dropoffType:
           type: integer
           format: int32
-          description: Identificador del tipo de subida/bajada
+          description: Pickup or Drop off type ID
           example: 56
-        orden:
+        sequence:
           type: integer
           format: int32
-          description: Número de orden de la parada en la secuencia del itinerario
+          description: Sequence order of the stop in the subroute
           example: 14
-    Punto:
+    Point:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del punto
+          description: Point ID
           example: 3243541
-        ubicacion:
+        location:
           $ref: '#/components/schemas/LatLong'
-    Punto_trazado:
+    PathPoint:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador de la relación
+          description: Relation ID
           example: 56
-        trazado:
+        path:
           type: integer
           format: int32
-          description: Identificador del trazado
+          description: Path ID
           example: 3243
-        punto:
+        point:
           type: integer
           format: int64
-          description: Identificador del punto
+          description: Point ID
           example: 3243541
-        orden:
+        sequence:
           type: integer
           format: int32
-          description: Número de orden del punto en la secuencia del trazado
+          description: Sequence order of the point in the path
           example: 14
-    Punto_venta:
+    POS:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del punto
+          description: Point of sale ID
           example: 3243541
-        operador:
+        agency:
           type: integer
           format: int32
-          description: Identificador del operador
+          description: Agency ID
           example: 5
-        nucleo:
+        townArea:
           type: integer
           format: int64
-          description: Identificador del núcleo en la base de datos
+          description: Town area ID
           example: 134846
-        tipo:
+        type:
           type: integer
           format: int32
-          description: Identificador del tipo
+          description: Pos type ID
           example: 56
-        direccion:
+        address:
           type: string
-          description: Dirección postal del punto (si la tiene)
+          description: Station address (if it has one)
           example: Paseo del Parque 21
-        ubicacion:
+        location:
           $ref: '#/components/schemas/LatLong'
-    Red:
+    Network:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador de la red
+          description: Network ID
           example: 5
-        nombre:
+        shortName:
           type: string
-          description: Nombre de la red
-          example: Renfe
-    Rol_operador:
+          description: Contracted name or acronym used for the network
+          example: "CTMAM"
+        longName:
+          type: string
+          description: Extended or full-version name of the networkd
+          example: "Consorcio de Transportes Metropolitanos del Área de Málaga"
+    AgencyRole:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del rol
+          description: Agency role ID
           example: 5
-        rol:
+        role:
           type: string
-          description: Nombre del rol
-          example: Planificación
-        descripcion:
+          description: Name
+          example: Planning
+        description:
           type: string
-          description: Descripción del rol
-          example: 'Gestión de horarios, desvíos, refuerzos, etc...'
-    Tipo_informacion:
+          description: Description
+          example: 'Timetables, detours, reinforcements, etc...'
+    InfoType:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del tipo en la base de datos
+          description: Info type ID
           example: 134846
-        tipo:
+        type:
           type: string
-          description: Nombre del tipo
+          description: Type name
           example: URL
-    Tipo_itinerario:
+    SubrouteType:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del tipo en la base de datos
+          description: Subroute type ID
           example: 134846
-        tipo:
+        type:
           type: string
-          description: Nombre del tipo
-          example: Posicionamiento
-        descripcion:
+          description: Type name
+          example: Positioning move
+        description:
           type: string
-          description: Descripción del sentido
-          example: Movimiento sin pasajeros al comenzar o terminar el servicio
-    Tipo_punto_venta:
+          description: Type description
+          example: Empty ride at the start or end of service for a vehicle. Typically from or to the depot.
+    PosType:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del tipo
+          description: Point of sale type ID
           example: 56
-        tipo:
+        type:
           type: string
-          description: Nombre del tipo
-          example: Estanco
-    Tipo_subida_bajada:
+          description: Type name
+          example: Kiosk
+    PickupDropoffType:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del tipo de subida/bajada
+          description: Pickup or Drop off type ID
           example: 56
-        tipo:
+        type:
           type: string
-          description: Nombre del tipo
-          example: Avisar conductor
-        descripcion:
+          description: Pickup or Drop off method
+          example: Sheduled
+        description:
           type: string
-          description: Información explicativa del tipo
-          example: Es necesario avisar al conductor para realizar la parada
-    Tipo_transbordo:
+          description: Method explanation or example
+          example: The vehicle performs a regularly sheduled stop
+    TransferType:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del tipo de transbordo
+          description: Transfer type ID
           example: 56
-        tipo:
+        type:
           type: string
-          description: Nombre del tipo
-          example: Programado
-        descripcion:
+          description: Type name
+          example: Sheduled
+        description:
           type: string
-          description: Información explicativa del tipo
-          example: El vehículo espera a los viajeros que van a transbordar
-    Tipo_linea_gtfs:
+          description: Type description
+          example: The vehicles wait for the tranfer passengers to depart
+    RouteType:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del tipo de transporte
+          description: 
           example: 101
-        descripcion:
+        description:
           type: string
-          description: Nombre del tipo
-          example: Servicio ferroviario de alta velocidad
-        ejemplos:
+          description: Type name
+          example: High Speed Rail Service
+        example:
           type: string
-          description: Información explicativa del tipo
+          description: Type explanation or example
           example: 'TGV (FR), ICE (DE), Eurostar (GB)'
       description: >-
-        Leyenda en [Google
+        Legend in [Google
         Dev](https://developers.google.com/transit/gtfs/reference/extended-route-types?hl=es)
-    Transbordo:
+    Transfer:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          description: Identificador del transbordo
+          description: Transfer ID
           example: 3234854
-        parada1:
+        stop1:
           type: integer
           format: int32
-          description: Identificador de la parada en la base de datos
+          description: Stop ID where tranfer begins
           example: 5423
-        parada2:
+        stop2:
           type: integer
           format: int32
-          description: Identificador de la parada en la base de datos
+          description: Stop ID where tranfer ends
           example: 5423
-        tipo:
+        type:
           type: integer
           format: int32
-          description: Identificador del tipo de transbordo
+          description: Tranfer type ID
           example: 56
-        tiempo_minimo:
+        minimunTime:
           type: integer
           format: int32
-          description: Minutos necesarios para hacer el transbordo (si son necesarios)
-    Trazado:
+          description: Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops (if, needed)
+    Path:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador del trazado en la base de datos
+          description: Path ID
           example: 5423
         color:
           type: string
-          description: Color HTML de la polilínea
-          example: '#009639'
-        transparencia:
+          description: Path color (RGB)
+          example: '009639'
+        transparency:
           type: number
           format: float
-          description: Porcentaje de transparencia de la polilínea
+          description: Transparency of the path [0,1]
           example: 1
-    Zona:
+    Zone:
       type: object
       properties:
         id:
           type: integer
           format: int32
-          description: Identificador de la zona
+          description: Zone ID
           example: 5
-        red:
+        network:
           type: integer
           format: int32
-          description: Identificador de la red
+          description: Network ID
           example: 5
-        nombre:
+        name:
           type: string
-          description: Nombre de la zona
+          description: Zone name
           example: A
     LatLong:
       type: object
@@ -683,14 +647,30 @@ components:
         lat:
           type: number
           format: float
+          description: Latitude
           example: 36.6916079
         lon:
           type: number
           format: float
+          description: Longitude
           example: -4.4561347
       required:
         - lat
         - lon
+    startDate:
+      type: string
+      format: date-time
+      description: >
+        Moment when this object start his validity (within those parameters)
+        The database may contain other versions (within other ID)
+      example: '2019-08-19'
+    endDate:
+      type: string
+      format: date-time
+      description: >
+        Moment when this object ends his validity (within those parameters)
+        The database may contain other versions (within other ID)
+      example: '2019-08-19'
     ApiResponse:
       type: object
       properties:
@@ -722,7 +702,7 @@ components:
           schema:
             $ref: '#/components/schemas/ApiResponse'
 tags:
-  - name: Información
+  - name: Informacion
     description: Información general de la instancia
   - name: DB
     description: Operaciones básicas sobre la BBDD
