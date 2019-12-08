@@ -7,8 +7,8 @@
     "maintenance": false,
 
     "dbhost": "localhost",
-    "dbuser": "rutpam",
-    "dbpass": "rutpam",
+    "dbuser": "",
+    "dbpass": "",
     "dbname": "rutpam",
-    "dbport": 3306
+    "dbport": 27017
 }

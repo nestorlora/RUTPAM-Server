@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const config = require('./config.json');
+const config = require('./config/config.json');
 const db = require('./db');
 app.listen(config.port, () => console.log('RUTPAM-Server v'+config.version+' listening on port '+config.port));
 app.use(cors());
@@ -35,4 +35,4 @@ app.get('/tipos_subida_bajada', function(req, res){
 // To be implemented
 app.get('/*', function(req, res){
     res.sendStatus(418);
-})
+});
