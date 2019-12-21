@@ -1,9 +1,10 @@
 'use strict'
+// Library imports
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const config = require('./config/config.json');
-const db = require('./db');
+// Express app
 app.listen(config.port, () => console.log('RUTPAM-Server v'+config.version+' listening on port '+config.port));
 app.use(cors());
 
@@ -17,6 +18,7 @@ app.get('/info', function(req, res){
     res.status(200).json(info).end();
 });
 
+/*
 app.get('/tipos_subida_bajada', function(req, res){
     if(req.query.id){
         var id = Number(req.query.id);
@@ -31,6 +33,7 @@ app.get('/tipos_subida_bajada', function(req, res){
         });
     }
 });
+*/
 
 // To be implemented
 app.get('/*', function(req, res){
