@@ -2,7 +2,6 @@
 // Library imports
 const express = require('express');
 const cors = require('cors');
-const app = express();
 // Custom classes imports
 const {Network} = require("./class/Network.js");
 const {DB} = require("./class/DB");
@@ -10,6 +9,7 @@ const {DB} = require("./class/DB");
 const config = require('./config/config.json');
 
 // Express app
+const app = express();
 app.listen(config.port, () => console.log('RUTPAM-Server v'+config.version+' listening on port '+config.port));
 app.use(cors());
 var routes = require("./routes/index");
