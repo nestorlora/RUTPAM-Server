@@ -14,8 +14,10 @@ const dburi = config.dbuser+':'+config.dbpass+'@'+config.dbhost+':'+config.dbpor
 // Express app
 app.listen(config.port, () => console.log('RUTPAM-Server v'+config.version+' listening on port '+config.port));
 app.use(cors());
+var routes = require("./routes/index");
+routes(app);
 
-app.get('/info', function(req, res){
+/*app.get('/info', function(req, res){
     let info = {
         'version': config.version,
         'contact': config.admin,
@@ -23,7 +25,7 @@ app.get('/info', function(req, res){
         'maintenance': config.maintenance
     };
     res.status(200).json(info).end();
-});
+});*/
 
 app.get('/networks', function(req, res){
     let db = monk(dburi);
