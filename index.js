@@ -17,16 +17,6 @@ app.use(cors());
 var routes = require("./routes/index");
 routes(app);
 
-/*app.get('/info', function(req, res){
-    let info = {
-        'version': config.version,
-        'contact': config.admin,
-        'web': config.web,
-        'maintenance': config.maintenance
-    };
-    res.status(200).json(info).end();
-});*/
-
 app.get('/networks', function(req, res){
     let db = monk(dburi);
     let networks = db.get('networks');
@@ -57,22 +47,6 @@ app.get('/networks/:id', function(req, res){
     });
 });
 
-/*
-app.get('/tipos_subida_bajada', function(req, res){
-    if(req.query.id){
-        var id = Number(req.query.id);
-        db.query('SELECT * FROM `pickup_dropoff_types` WHERE `id` = '+id, function(err, rows, fields){
-            if(err) throw err;
-            res.status(200).json(rows).end();
-        });
-    }else{
-        db.query('SELECT * FROM `pickup_dropoff_types`', function(err, rows, fields){
-            if(err) throw err;
-            res.status(200).json(rows).end();
-        });
-    }
-});
-*/
 
 // To be implemented
 app.get('/*', function(req, res){
