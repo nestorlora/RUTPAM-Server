@@ -1,6 +1,6 @@
 /**
  * @file Class IdentifiedObject definition
- * @version v1.0
+ * @version v1.1
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -9,8 +9,10 @@
 class IdentifiedObject extends Object {
     constructor(obj){
         super();
-        if(obj){
+        if(obj._id){
             this._id = obj._id;
+        }else if(obj.id){
+            this._id = obj.id;
         }else{
             this._id = null;
         }
@@ -28,9 +30,6 @@ class IdentifiedObject extends Object {
         copy.id = copy._id;
         delete copy._id;
         return copy;
-    }
-    import(obj){
-        // TODO Implement
     }
 }
 
