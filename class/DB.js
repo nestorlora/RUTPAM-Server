@@ -29,8 +29,9 @@ class DB {
     };
     catch(err){
         console.error(err);
-    }
+    };
     find(param, next){
+        param = normalizeId(param);
         let db = this.db;
         this.collection.find(param)
         .then(next)
@@ -39,6 +40,15 @@ class DB {
             db.close();
         });
     }
+}
+
+function normalizeId(param){
+    console.log(typeof param._id)
+    if(typeof param._id == "string"){
+        param._id = monk.id(param._id);
+    }
+    console.log(typeof param._id)
+    return param;
 }
 
 module.exports = {DB};
