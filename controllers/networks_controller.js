@@ -7,7 +7,7 @@
  */
 
 const data = require('../data/data');
-const {Network} = require('../class/Network');
+const {Network} = require('../models/Network');
 
 exports.getAllNetworks = function(req, res){
     data.getAll('networks', Network, (data, err)=>{
