@@ -1,6 +1,6 @@
 /**
  * @file Controller functions for /networks
- * @version v1.0
+ * @version v1.1
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -13,4 +13,12 @@ exports.getAllNetworks = function(req, res){
     data.getAll('networks', Network, (data, err)=>{
         res.status(200).json(data).end();
     });
+}
+
+var callback = function (res, data, err){
+    if(err){
+        res.status(err.code).send(err.text).end();
+    }else{
+        res.status(200).json(data).end();
+    }
 }
