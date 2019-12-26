@@ -17,6 +17,11 @@ exports.getAll = function(collection, model, callback){
     });
 }
 
+function testId(value){
+    // Checks if ObjectId is exactly 24 hex chars long
+    return /^([a-z]|[0-9]){24}$/.test(value);
+}
+
 function error(code, message){
     return {
         code: code,
