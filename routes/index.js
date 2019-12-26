@@ -1,6 +1,6 @@
 /**
  * @file App main router
- * @version v1.2
+ * @version v1.3
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -18,6 +18,6 @@ module.exports = function(app) {
         .get(networks.getNetwork);
     app.route('/*')
         .get(function(req, res){
-            res.sendStatus(418);
+            res.sendStatus(404);
         });
 };
