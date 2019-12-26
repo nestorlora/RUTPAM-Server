@@ -1,6 +1,6 @@
 /**
  * @file Controller functions for /networks
- * @version v1.1
+ * @version v1.2
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -12,6 +12,13 @@ const {Network} = require('../models/Network');
 exports.getAllNetworks = function(req, res){
     data.getAll('networks', Network, (data, err)=>{
         res.status(200).json(data).end();
+    });
+}
+
+exports.getNetwork = function(req, res){
+    let id = req.params.id;
+    data.getById('networks', id, Network, (data, err)=>{
+        callback(res, data, err);
     });
 }
 
