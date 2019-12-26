@@ -1,6 +1,6 @@
 /**
  * @file Data functions definition
- * @version v1.0
+ * @version v1.1
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -14,4 +14,11 @@ exports.getAll = function(collection, model, callback){
         let res = new ArrayAdapter(results, model).toModel();
         callback(res, null);
     });
+}
+
+function error(code, message){
+    return {
+        code: code,
+        text: message
+    };
 }
