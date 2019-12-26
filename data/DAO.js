@@ -1,6 +1,6 @@
 /**
  * @file Class DAO definition
- * @version v1.1
+ * @version v1.2
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -42,6 +42,20 @@ class DAO {
         .then(()=>{
             db.close();
         });
+    }
+
+    update(param, object, callback){
+        let db = this.db;
+        this.collection.update(param, {$set: object})
+        .then(()=>{
+            this.collection.find(param)
+            .then(callback)
+            .catch(this.catch)
+            .then(()=>{
+                db.close();
+            })
+        })
+        .catch(this.catch);
     }
 }
 
