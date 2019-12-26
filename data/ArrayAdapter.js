@@ -8,7 +8,7 @@
 
 const monk = require('monk');
 
-class ObjectAdapter extends Array {
+class ArrayAdapter extends Array {
     constructor(object_array, object_class){
         super();
         for(let i = 0; i < object_array.length; i++){
@@ -43,4 +43,4 @@ class ObjectAdapter extends Array {
     }
 }
 
-module.exports = {ObjectAdapter};
+module.exports = {ArrayAdapter};

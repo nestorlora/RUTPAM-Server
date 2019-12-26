@@ -7,11 +7,11 @@
  */
 
 const {DAO} = require('./DAO');
-const {ObjectAdapter} = require('./ObjectAdapter');
+const {ArrayAdapter} = require('./ArrayAdapter');
 
 exports.getAll = function(collection, model, callback){
     new DAO(collection).find({}, (results)=>{
-        let res = new ObjectAdapter(results, model).toModel();
+        let res = new ArrayAdapter(results, model).toModel();
         callback(res, null);
     });
 }
