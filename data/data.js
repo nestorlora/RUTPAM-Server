@@ -1,6 +1,6 @@
 /**
  * @file Data functions definition
- * @version v1.3
+ * @version v1.4
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -32,7 +32,8 @@ exports.getById = function(collection, id, model, callback){
 exports.update = function(collection, object, model, callback){
     if(testId(object.id)){
         let filter = new  ObjectAdapter({id: object.id}).toMongo();
-        new DAO(collection).update(filter, object, (results)=>{
+        let obj = new ObjectAdapter(object).toMongo();
+        new DAO(collection).update(filter, obj, (results)=>{
             let res = new ArrayAdapter(results, model).toModel();
             callback(res, null);
         });
