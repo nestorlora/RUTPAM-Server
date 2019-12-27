@@ -1,6 +1,6 @@
 /**
  * @file Data functions definition
- * @version v1.4
+ * @version v1.5
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -27,6 +27,16 @@ exports.getById = function(collection, id, model, callback){
     }else{
         callback(null, error(400,"Invalid input: id MUST be a single string of 24 hex characters"));
     }
+}
+
+exports.insert = function(collection, object, model, callback){
+    object.id = null;
+    let obj = new ObjectAdapter(object).toMongo();
+    new DAO(collection).insert(obj, ()=>{
+        let res = new ObjectAdapter(obj).toModel();
+        callback([res], null);
+    })
+    
 }
 
 exports.update = function(collection, object, model, callback){
