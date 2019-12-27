@@ -53,7 +53,7 @@ class DAO {
             .catch(this.catch)
             .then(()=>{
                 db.close();
-            })
+            });
         })
         .catch(this.catch);
     }
