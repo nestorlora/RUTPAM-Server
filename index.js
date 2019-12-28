@@ -20,8 +20,3 @@ app.use(express.json());
 app.use(cors());
 var routes = require("./routes/index");
 routes(app);
-
-// To be implemented
-app.get('/*', function(req, res){
-    res.sendStatus(418);
-});
