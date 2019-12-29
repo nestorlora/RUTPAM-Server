@@ -1,6 +1,6 @@
 /**
  * @file Controller functions for /networks
- * @version v1.5
+ * @version v1.6
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
@@ -23,14 +23,14 @@ exports.getNetwork = function(req, res){
 }
 
 exports.addNetwork = function(req, res){
-    let net = req.body;
+    let net = new Network(req.body);
     data.insert('networks', net, Network, (data, err)=>{
         callback(res, data, err);
     })
 }
 
 exports.editNetwork = function(req, res){
-    let net = req.body;
+    let net = new Network(req.body);
     data.update('networks', net, Network, (data, err)=>{
         callback(res, data, err);
     });
