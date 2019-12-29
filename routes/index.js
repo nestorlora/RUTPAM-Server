@@ -20,5 +20,10 @@ module.exports = function(app) {
     app.route('/networks/:id')
         .get(networks.getNetwork);
     app.route('/*')
-        .get(error.notFound);
+        .get(error.notFound)
+        .post(error.notFound)
+        .put(error.notFound)
+        .patch(error.notFound)
+        .delete(error.notFound)
+        .head(error.notFound);
 };
