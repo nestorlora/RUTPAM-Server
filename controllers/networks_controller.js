@@ -8,6 +8,7 @@
 
 const data = require('../data/data');
 const {Network} = require('../models/Network');
+const {ApiResponse} = require('../models/ApiResponse');
 
 exports.getAllNetworks = function(req, res){
     data.getAll('networks', Network, (data, err)=>{
@@ -38,8 +39,8 @@ exports.editNetwork = function(req, res){
 
 var callback = function (res, data, err){
     if(err){
-        res.status(err.code).send(err.text).end();
+        new ApiResponse(err.code, err.text).send(null, res);
     }else{
-        res.status(200).json(data).end();
-    }
+        new ApiResponse(200).send({networks: data}, res);
+    }  
 }
