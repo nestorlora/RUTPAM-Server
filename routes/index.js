@@ -7,6 +7,7 @@
  */
 
 module.exports = function(app) {
+    const error = require('../controllers/errors');
     const info = require('../controllers/info_controller');
     const networks = require('../controllers/networks_controller');
     
@@ -19,7 +20,5 @@ module.exports = function(app) {
     app.route('/networks/:id')
         .get(networks.getNetwork);
     app.route('/*')
-        .get(function(req, res){
-            res.sendStatus(404);
-        });
+        .get(error.notFound);
 };
