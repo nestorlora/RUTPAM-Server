@@ -6,15 +6,15 @@
  * @license MIT
  */
 
-const {IdentifiedObject} = require('./IdentifiedObject');
+const { IdentifiedObject } = require('./IdentifiedObject');
 
-class Network extends IdentifiedObject{
-    constructor(obj){
-        if(obj){
+class Network extends IdentifiedObject {
+    constructor(obj) {
+        if (obj) {
             super(obj);
             this.shortName = obj.shortName;
             this.longName = obj.longName;
-        }else{
+        } else {
             super();
             this.shortName = null;
             this.longName = null;
@@ -23,4 +23,4 @@ class Network extends IdentifiedObject{
     }
 }
 
-module.exports = {Network};
+module.exports = { Network };

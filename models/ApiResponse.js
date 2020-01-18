@@ -7,12 +7,12 @@
  */
 
 class ApiResponse {
-    constructor(code, error){
+    constructor(code, error) {
         this.code = code;
-        if(error){
+        if (error) {
             this.status = error;
-        }else{
-            switch(code){
+        } else {
+            switch (code) {
                 default:
                     this.code = 500;
                     this.status = "Internal Server Error";
@@ -61,20 +61,20 @@ class ApiResponse {
                     break;
             }
         }
-        return this;   
+        return this;
     }
 
-    send(data, res){
-        if(data === null){
+    send(data, res) {
+        if (data === null) {
             data = {};
         }
-        if(res){
+        if (res) {
             res.status(this.code).json(Object.assign(this, data)).end();
-        }else{
+        } else {
             return Object.assign(this, data);
         }
     }
 
 }
 
-module.exports = {ApiResponse};
+module.exports = { ApiResponse };

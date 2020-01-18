@@ -9,10 +9,10 @@
 const monk = require('monk');
 
 class ArrayAdapter extends Array {
-    constructor(object_array, object_class){
+    constructor(object_array, object_class) {
         super();
-        for(let i = 0; i < object_array.length; i++){
-            if(object_array[i]._id){
+        for (let i = 0; i < object_array.length; i++) {
+            if (object_array[i]._id) {
                 // Change object id from Mongo scheme to RUTPAM scheme
                 object_array[i].id = object_array[i]._id;
             }
@@ -21,9 +21,9 @@ class ArrayAdapter extends Array {
         //return this;
     }
 
-    toModel(){
+    toModel() {
         let arr = new Array();
-        for(let i = 0; i < this.length; i++){
+        for (let i = 0; i < this.length; i++) {
             let copy = Object.assign({}, this[i]);
             copy.id = String(copy.id);
             arr.push(copy);
@@ -31,9 +31,9 @@ class ArrayAdapter extends Array {
         return arr;
     }
 
-    toMongo(){
+    toMongo() {
         let arr = new Array();
-        for(let i = 0; i < this.length; i++){
+        for (let i = 0; i < this.length; i++) {
             let copy = Object.assign({}, this[i]);
             copy._id = monk.id(copy.id);
             delete copy.id;
@@ -43,4 +43,4 @@ class ArrayAdapter extends Array {
     }
 }
 
-module.exports = {ArrayAdapter};
+module.exports = { ArrayAdapter };

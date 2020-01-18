@@ -6,11 +6,11 @@
  * @license MIT
  */
 
-module.exports = function(app) {
+module.exports = function (app) {
     const error = require('../controllers/errors');
     const info = require('../controllers/info_controller');
     const networks = require('../controllers/networks_controller');
-    
+
     app.route('/info')
         .get(info.getInfo);
     app.route('/networks')

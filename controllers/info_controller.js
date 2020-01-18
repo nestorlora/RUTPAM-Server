@@ -8,7 +8,7 @@
 
 config = require("../config/config.json");
 
-exports.getInfo = function(req, res){
+exports.getInfo = function (req, res) {
     let info = {
         'version': config.version,
         'contact': config.admin,

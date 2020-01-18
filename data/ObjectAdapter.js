@@ -9,9 +9,9 @@
 const monk = require('monk');
 
 class ObjectAdapter extends Object {
-    constructor(obj, obj_class){
+    constructor(obj, obj_class) {
         super();
-        if(obj._id){
+        if (obj._id) {
             obj.id = obj._id;
             delete obj._id;
         }
@@ -19,13 +19,13 @@ class ObjectAdapter extends Object {
         //return this;
     }
 
-    toModel(){
+    toModel() {
         let obj = Object.assign({}, this);
         obj.id = String(obj.id);
         return obj;
     }
 
-    toMongo(){
+    toMongo() {
         let obj = Object.assign({}, this);
         obj._id = monk.id(obj.id);
         delete obj.id;
@@ -33,4 +33,4 @@ class ObjectAdapter extends Object {
     }
 }
 
-module.exports = {ObjectAdapter};
+module.exports = { ObjectAdapter };

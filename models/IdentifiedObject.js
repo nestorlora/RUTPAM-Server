@@ -7,14 +7,14 @@
  */
 
 class IdentifiedObject extends Object {
-    constructor(obj){
+    constructor(obj) {
         super();
-        if(obj.id){
+        if (obj.id) {
             this.id = obj.id;
-        }else{
+        } else {
             this.id = null;
         }
     }
 }
 
-module.exports = {IdentifiedObject};
+module.exports = { IdentifiedObject };

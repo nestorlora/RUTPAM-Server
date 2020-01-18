@@ -6,9 +6,9 @@
  * @license MIT
  */
 
-const {ApiResponse} = require('../models/ApiResponse');
+const { ApiResponse } = require('../models/ApiResponse');
 
-exports.notFound = function(req, res){
+exports.notFound = function (req, res) {
    new ApiResponse(404).send(null, res);
 }
 
