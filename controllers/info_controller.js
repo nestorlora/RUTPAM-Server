@@ -1,16 +1,17 @@
 /**
  * @file Controller functions for /info
- * @version v1.0
+ * @version v1.1
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
  * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2019
  * @license MIT
  */
 
 config = require("../config/config.json");
+const version = require("../config/const.json").version;
 
 exports.getInfo = function (req, res) {
     let info = {
-        'version': config.version,
+        'version': version,
         'contact': config.admin,
         'web': config.web,
         'maintenance': config.maintenance
