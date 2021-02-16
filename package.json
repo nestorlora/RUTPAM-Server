@@ -25,8 +25,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongodb": "^3.5.1",
-    "monk": "^7.1.2",
+    "mongodb": "^3.6.4",
+    "monk": "^7.3.3",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1"
   }
