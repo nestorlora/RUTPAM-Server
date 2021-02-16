@@ -23,6 +23,7 @@ class ObjectAdapter extends Object {
         let obj = Object.assign({}, this);
         obj.id = String(obj.id);
         return obj;
+        // BUG devolver con la clase del objecto
     }
 
     toMongo() {
