@@ -10,3 +10,13 @@
 // Library imports
 import express from 'express';
 import cors from 'cors';
+// Env Variables import
+import * as dotenv from 'dotenv';
+dotenv.config();
+// Version
+const version:String = "0.3.0-dev.3";
+// Express app
+const app = express();
+app.listen(process.env.APP_PORT, () => console.log('RUTPAM-Server v' + version + ' listening on port ' + process.env.APP_PORT));
+app.use(express.json());
+app.use(cors());
