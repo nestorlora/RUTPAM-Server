@@ -1,8 +1,6 @@
 {
   "name": "rutpam-server",
-  "version": "1.0.0",
-  "description": "Server with REST API that provide centraliced access, changelog storage and processing to multiple transit networks",
-  "main": "app.js",
+  "version": "0.3.0-dev.3",
   "scripts": {
     "prestart": "npm install",
     "start": "node app.js"
