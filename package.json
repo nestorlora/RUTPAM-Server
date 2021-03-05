@@ -1,6 +1,7 @@
 {
   "name": "rutpam-server",
   "version": "0.3.0-dev.3",
+  "description": "Server with REST API providing merged storage of multiple transit networks",
   "main": "dist/app.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
