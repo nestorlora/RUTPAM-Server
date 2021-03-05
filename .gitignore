@@ -21,6 +21,9 @@
 ## To-Do files
 /todo/*
 
+## Typescript dist files
+/dist/*
+
 ## NODE.JS
 
 # Logs
