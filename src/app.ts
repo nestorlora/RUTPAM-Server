@@ -20,3 +20,6 @@ const app = express();
 app.listen(process.env.APP_PORT, () => console.log('RUTPAM-Server v' + version + ' listening on port ' + process.env.APP_PORT));
 app.use(express.json());
 app.use(cors());
+
+import routes from "./routes/index";
+routes(app);
