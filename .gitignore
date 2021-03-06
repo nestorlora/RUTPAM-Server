@@ -15,11 +15,14 @@
 /tests/tests/
 /tests/results/
 
-## Auto-generated docs
-/docs/*
-
 ## To-Do files
 /todo/*
+
+## Development databases
+dev.db
+
+## Typescript dist files
+/dist
 
 ## NODE.JS
 
