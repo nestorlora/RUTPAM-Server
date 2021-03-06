@@ -1,34 +1,34 @@
 /**
- * @file Class ApiResponse definition
- * @version v1.0
+ * @file ApiResponse class definition
+ * @version v1.5.0
  * @author Néstor Manuel Lora Romero <nestorlora@geeklab.es>
- * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2020
+ * @copyright Geeklab - Néstor Manuel Lora Romero 2018-2021
  * @license MIT
  */
 
-class ApiResponse {
-    constructor(code, error) {
+export class ApiResponse{
+    public code: Number;
+    public status: String;
+
+    constructor(code:Number, status?:String){
         this.code = code;
-        if (error) {
-            this.status = error;
-        } else {
-            switch (code) {
+        if(status){
+            this.status = status;
+        }else{
+            switch(code){
                 default:
                     this.code = 500;
-                    this.status = "Internal Server Error";
+                    this.status = "Internal Server Error"
                     break;
                 case 200:
                     this.status = "OK";
                     break;
-                /*case 201:
+                case 201:
                     this.status = "Created";
-                    break;
-                case 202:
-                    this.status = "Accepted";
                     break;
                 case 204:
                     this.status = "No Content";
-                    break;*/
+                    break;
                 case 400:
                     this.status = "Bad Request";
                     break;
@@ -41,12 +41,12 @@ class ApiResponse {
                 case 404:
                     this.status = "Not Found";
                     break;
-                /*case 410:
-                    this.status = "Gone";
+                case 405:
+                    this.status = "Method Not Allowed"
                     break;
-                case 423:
-                    this.status = "Locked";
-                    break;*/
+                case 409:
+                    this.status = "Conflict"
+                    break;
                 case 429:
                     this.status = "Too Many Requests";
                     break;
@@ -61,20 +61,5 @@ class ApiResponse {
                     break;
             }
         }
-        return this;
     }
-
-    send(data, res) {
-        if (data === null) {
-            data = {};
-        }
-        if (res) {
-            res.status(this.code).json(Object.assign(this, data)).end();
-        } else {
-            return Object.assign(this, data);
-        }
-    }
-
 }
-
-module.exports = { ApiResponse };
