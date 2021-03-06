@@ -11,6 +11,6 @@
 
 [![Gitmoji](https://img.shields.io/badge/Gitmoji-%20😜%20😍-FFDD67.svg)](https://gitmoji.carloscuesta.me/)<br>
 
-Backend server and REST API of centralized storing and publishing of transit networks information.
+Backend server and REST API for centralized storing and publishing of transit networks information.
 
 It's intended to support and extend the GTFS specification (and other standards) to a more abstract and comprehensive information base, allowing you to store, edit, combine, overlay, import and share data between multiple services.
