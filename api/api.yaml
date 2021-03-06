@@ -1,0 +1,375 @@
+openapi: 3.0.1
+info:
+  title: RUTPAM API
+  version: 0.3-dev
+  description: >
+    This API defines the methods and objects to provide and receive data from/to the server.
+    The design extends GTFS specification to a more abstract and complete knowledge base about the stored public transit networks.
+    
+
+    Currently supported standards:
+      - GTFS
+      - GTFS Google Transit's Extensions
+    
+    Planned support standards:
+      * GTFS-RT (Real Time)
+      * GTFS-Flex
+      * GBFS
+      * Timetables extensions from [GTFS-to-HTML](https://github.com/BlinkTagInc/gtfs-to-html#build-timetablestxt) project
+  contact:
+    name: Néstor Lora
+    email: nestorlora@geeklab.es
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:5000'
+    description: Development local HTTP Server
+# Method legend:
+# GET - Get data (not modified)
+# POST - Create resource if not exists
+# PUT - Create resource
+# DELETE - Delete/Disable/Expire resource
+# PATCH - Edit resource
+paths:
+  /info:
+    summary: Server information
+    get:
+      tags:
+        - Server
+      summary: Getting the server status
+      description: Returns server information
+      security: []
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: Server version
+                    example: 1.0.0
+                  contact:
+                    type: string
+                    description: Email contact
+                    example: webmaster@localhost
+                  web:
+                    type: string
+                    description: Project website
+                    example: 'http://localhost/RUTPAM'
+                  maintenance:
+                    type: boolean
+                    description: Show if the server may contain inaccurate information due to maintenance works
+                    example: false
+#  /auth - TODO
+  /networks:
+    get:
+      tags:
+        - Networks
+      summary: Get all networks
+      description: Returns all the networks in the database
+      parameters: []
+      responses:
+        200:
+          $ref: '#/components/responses/200.Networks'
+        429:
+          $ref: '#/components/responses/429'
+    post:
+      tags:
+        - Networks
+      summary: Create new network
+      description: Creates new network in the server
+      requestBody:
+        description: Network object that needs to be added to database
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Network.new'
+      responses:
+        201:
+          $ref: '#/components/responses/201.Networks'
+        400:
+          $ref: '#/components/responses/400'
+        409:
+          $ref: '#/components/responses/409'
+  /networks/{id}:
+    get:
+      tags:
+        - Networks
+      summary: Get a specific network
+      description: Return a single network
+      parameters:
+        - in: path
+          name: id
+          description: Network ID
+          required: true
+          schema:
+            $ref: '#/components/schemas/objectId'
+      responses:
+        200:
+          $ref: '#/components/responses/200.Networks'
+        404:
+          $ref: '#/components/responses/404'
+        429:
+          $ref: '#/components/responses/429'
+    put:
+      tags:
+        - Networks
+      summary: Modify stored network
+      description: Update stored network maintaining all dependent objects
+      parameters:
+        - in: path
+          name: id
+          description: Network ID
+          required: true
+          schema:
+            $ref: '#/components/schemas/objectId'
+      requestBody:
+        description: >
+          Network object to be updated in database<br>
+          You must provide a valid Network.id to complete the operation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Network'
+      responses:
+        200:
+          $ref: '#/components/responses/200.Networks'
+        400:
+          $ref: '#/components/responses/400'
+        404:
+          $ref: '#/components/responses/404'
+    delete:
+      tags:
+        - Networks
+      summary: Deletes a single network
+      description: >
+        Removes a network from the server
+      parameters:
+        - in: path
+          name: id
+          description: Network ID
+          required: true
+          schema:
+            $ref: '#/components/schemas/objectId'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+        400:
+          $ref: '#/components/responses/400'
+        404:
+          $ref: '#/components/responses/404'
+components:
+  schemas:
+    Network:
+      allOf:
+      - type: object
+        properties:    
+          id:
+            allOf:
+            - $ref: '#/components/schemas/objectId'
+            - description: Network internal identification
+        required:
+          - id
+      - $ref: '#/components/schemas/Network.new'
+    Network.new:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Network code for user-friendly identification
+          example: malaga1
+        shortName:
+          type: string
+          description: Contracted name or acronym used for the network
+          example: "CTMAM"
+        longName:
+          type: string
+          description: Extended or full-version name of the network
+          example: "Consorcio de Transportes Metropolitanos del Área de Málaga"
+      required:
+        - code
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          format: int32
+          example: 200
+        status:
+          type: string
+          example: OK
+      required:
+        - code
+        - status
+    objectId:
+      type: integer
+      example: '248'
+    url:
+      type: string
+      example: 'http://example.com/resource'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    # COMMON SUCCESS
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            code: 200
+            status: "OK"
+    200.Networks:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  networks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Network'
+                required:
+                  - networks
+    201:
+      description: Successful creation
+      headers:
+        Location:
+          description: Link to new resource
+          schema:
+            $ref: '#/components/schemas/url'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            code: 201
+            status: "Created"
+    201.Networks:
+      description: Successful creation
+      headers:
+        Location:
+          description: Link to new network
+          schema:
+            $ref: '#/components/schemas/url'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  networks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Network'
+                required:
+                  - networks
+    # COMMON ERRORS
+    204:
+      description: Successful deletion
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            code: 204
+            status: "No Content"
+    400:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          examples:
+            Generic error:
+              value:
+                code: 400
+                description: Unexpected input error
+            Mandatory parameters not provided:
+              value:
+                code: 400
+                description: Some parameters are missing, check API documentation.
+            Invalid format:
+              value:
+                code: 400
+                description: Some parameters don't match de specification, check API documentaion.
+    401Unauthorized:
+      description: Access token is missing or invalid
+      headers:
+        WWW-Authenticate:
+          schema:
+            type: string
+          description: Authentication scheme(s) and parameters applicable to the target resource
+          #example: Newauth realm="apps", type=1, title="Login to \"apps\"", Basic realm="simple"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+    403Forbidden:
+      description: Forbidden operation for authenticated user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+    404:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            code: 404
+            status: Not found
+    409:
+      description: Conflict with existing resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            code: 409
+            status: Conflict
+    429:
+      description: The user has sent too many requests in a given amount of time
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before making a new request
+          example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            code: 429
+            status: Too many requests
+security:
+  - bearerAuth: []
+tags:
+  - name: Server
+    description: Server status and authentication
+  - name: Networks
+    description: Transit networks
+  - name: Routes
+  - name: Subroutes
+  - name: Stops
+  - name: Stations
+  - name: Transfers
+  - name: Paths
+  - name: Points
+  - name: Agencies
+  - name: Zones
+  - name: Towns
