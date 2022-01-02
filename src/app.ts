@@ -7,16 +7,23 @@
  */
 
 'use strict'
-// Library imports
 import express from 'express';
 import cors from 'cors';
+
+
 // Env Variables import
 import * as dotenv from 'dotenv';
 dotenv.config();
-// Version;
+// Version
 const version:String = require('./../package.json').version;
+
 // Express app
 const app = express();
+app.set('version', version);
+app.set('server_name', process.env.SERVER_NAME);
+app.set('contact', process.env.SERVER_ADMIN);
+app.set('web', process.env.SERVER_WEB);
+app.set('maintenance', false);
 app.listen(process.env.APP_PORT, () => console.log('RUTPAM-Server v' + version + ' listening on port ' + process.env.APP_PORT));
 app.use(express.json());
 app.use(cors());
