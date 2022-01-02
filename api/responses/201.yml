@@ -1,0 +1,13 @@
+description: Successful creation
+headers:
+  Location:
+    description: Link to new resource
+    schema:
+      $ref: '#/components/schemas/url'
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ApiResponse'
+    example:
+      code: 201
+      status: "Created"

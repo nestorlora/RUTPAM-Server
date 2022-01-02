@@ -1,0 +1,10 @@
+type: object
+description: "A network is a set of public transport services operating under the 
+  same authority with a common organization (such as: timetable coordination, common fare rules, transfers, etc...)"
+properties:    
+  id:
+    allOf:
+    - $ref: './objectId.yml'
+    - description: Network internal identification
+required:
+  - id

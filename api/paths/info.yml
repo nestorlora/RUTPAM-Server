@@ -1,0 +1,31 @@
+summary: Server information
+get:
+  tags:
+    - Server
+  summary: Getting the server status
+  description: Returns server information
+  security: []
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+                description: Server version
+                example: 1.0.0
+              contact:
+                type: string
+                description: Email contact
+                example: webmaster@localhost
+              web:
+                type: string
+                description: Project website
+                example: 'http://localhost/RUTPAM'
+              maintenance:
+                type: boolean
+                description: Show if the server may contain inaccurate information due to maintenance works
+                example: false

@@ -1,0 +1,24 @@
+get:
+  summary: Get all networks
+  tags: 
+    - Networks
+  description: Returns all the networks in the database
+  parameters: []
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../schemas/ApiResponse.yml'
+              - type: object
+                properties:
+                  networks:
+                    type: array
+                    items:
+                      $ref: '../schemas/Network.yml'
+                required:
+                  - networks
+    429:
+      $ref: '../responses/429.yml'

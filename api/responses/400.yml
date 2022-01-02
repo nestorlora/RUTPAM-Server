@@ -1,0 +1,18 @@
+description: Invalid input
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ApiResponse'
+    examples:
+      Generic error:
+        value:
+          code: 400
+          description: Unexpected input error
+      Mandatory parameters not provided:
+        value:
+          code: 400
+          description: Some parameters are missing, check API documentation.
+      Invalid format:
+        value:
+          code: 400
+          description: Some parameters don't match de specification, check API documentaion.

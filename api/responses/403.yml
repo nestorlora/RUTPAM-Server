@@ -1,0 +1,5 @@
+description: Forbidden operation for authenticated user
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ApiResponse'

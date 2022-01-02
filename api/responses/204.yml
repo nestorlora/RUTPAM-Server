@@ -1,0 +1,8 @@
+description: Successful deletion
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ApiResponse'
+    example:
+      code: 204
+      status: "No Content"

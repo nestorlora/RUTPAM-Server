@@ -1,0 +1,11 @@
+description: Access token is missing or invalid
+headers:
+  WWW-Authenticate:
+    schema:
+      type: string
+    description: Authentication scheme(s) and parameters applicable to the target resource
+    #example: Newauth realm="apps", type=1, title="Login to \"apps\"", Basic realm="simple"
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ApiResponse'

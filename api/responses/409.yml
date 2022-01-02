@@ -1,0 +1,8 @@
+description: Conflict with existing resource
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ApiResponse'
+    example:
+      code: 409
+      status: Conflict

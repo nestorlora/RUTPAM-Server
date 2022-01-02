@@ -1,0 +1,32 @@
+get:
+  tags:
+    - Networks
+  summary: Get a specific network
+  description: Return a single network
+  parameters:
+    - in: path
+      name: id
+      description: Network ID
+      required: true
+      schema:
+        $ref: '../schemas/objectId.yml'
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../schemas/ApiResponse.yml'
+              - type: object
+                properties:
+                  networks:
+                    type: array
+                    items:
+                      $ref: '../schemas/Network.yml'
+                required:
+                  - networks
+    404:
+      $ref: '../responses/404.yml'
+    429:
+      $ref: '../responses/429.yml'

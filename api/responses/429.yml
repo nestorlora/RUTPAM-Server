@@ -1,0 +1,14 @@
+description: The user has sent too many requests in a given amount of time
+headers:
+  Retry-After:
+    schema:
+      type: integer
+    description: Seconds to wait before making a new request
+    example: 60
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ApiResponse.yml'
+    example:
+      code: 429
+      status: Too many requests

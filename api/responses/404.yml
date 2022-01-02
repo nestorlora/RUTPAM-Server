@@ -1,0 +1,8 @@
+description: Resource not found
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ApiResponse.yml'
+    example:
+      code: 404
+      status: Not found
