@@ -7,12 +7,13 @@
  */
 
 import { Application } from "express";
+import {InfoController} from '../controllers/info';
 //import { NetworkController } from '../controllers/networks'
 import * as errors from "../controllers/errors"
 
 export default function(app:Application) {
 
-    // TODO Add route /info
+    app.route('/info').get(new InfoController().getInfo);
 /*    app.route('/networks')
         .get(new NetworkController().findMany)
         .post(new NetworkController().createOne)
