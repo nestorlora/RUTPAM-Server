@@ -4,9 +4,9 @@
   "description": "Server with REST API providing merged storage of multiple transit networks",
   "main": "dist/app.js",
   "scripts": {
-    "api":"npx swagger-cli bundle ./api/api.yaml --outfile ./api/bundle.yaml --type yaml && npx redoc-cli bundle -o ./api/index.html ./api/bundle.yaml --options.pagination=section",
+    "api": "npx swagger-cli bundle ./api/api.yaml --outfile ./api/bundle.yaml --type yaml && npx redoc-cli bundle -o ./api/index.html ./api/bundle.yaml --options.pagination=section",
     "build": "rm -rf dist && tsc",
-    "prestart": "npm run build",
+    "test": "npm run build && npm start",
     "start": "node ."
   },
   "repository": {

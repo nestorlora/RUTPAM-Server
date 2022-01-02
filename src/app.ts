@@ -10,23 +10,28 @@
 import express from 'express';
 import cors from 'cors';
 
-
 // Env Variables import
 import * as dotenv from 'dotenv';
 dotenv.config();
-// Version
 const version:String = require('./../package.json').version;
+const port:String|Number = process.env.APP_PORT || 5000;
+const server_name:String = process.env.SERVER_NAME || "RUTPAM Server";
+const contact:String = process.env.SERVER_ADMIN || "";
+const web:String = process.env.SERVER_WEB || "";
 
-// Express app
+// Configuring Express app
 const app = express();
 app.set('version', version);
-app.set('server_name', process.env.SERVER_NAME);
-app.set('contact', process.env.SERVER_ADMIN);
-app.set('web', process.env.SERVER_WEB);
+app.set('server_name', server_name);
+app.set('contact', contact);
+app.set('web', web);
 app.set('maintenance', false);
-app.listen(process.env.APP_PORT, () => console.log('RUTPAM-Server v' + version + ' listening on port ' + process.env.APP_PORT));
-app.use(express.json());
-app.use(cors());
+app.use(express.json(), cors());
+
+// Start server
+app.listen(port, () => {
+    console.log('RUTPAM-Server v' + version + ' listening on port ' + port)
+});
 
 import routes from "./routes/index";
 routes(app);
