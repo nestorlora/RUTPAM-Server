@@ -7,10 +7,10 @@
  */
 
 import { Response, Request } from 'express'
-import { Prisma } from '@prisma/client'
+//import { Prisma } from '@prisma/client'
 import { sendError } from '../helpers/sendError'
 
-export function prismaHandler(err:any, req:Request, res:Response, next?:Function) {
+/*export function prismaHandler(err:any, req:Request, res:Response, next?:Function) {
     if(err instanceof Prisma.PrismaClientKnownRequestError){
         const e:Prisma.PrismaClientKnownRequestError = err;
         switch(e.code){
@@ -27,4 +27,4 @@ function msgP2002(error:Prisma.PrismaClientKnownRequestError){
     let msg:string = 'Unique parameter already exists: ';
     msg += meta.target.join();
     return msg;
-}
+}*/

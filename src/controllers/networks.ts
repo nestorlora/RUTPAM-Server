@@ -7,13 +7,13 @@
  */
 
 import { Response, Request } from 'express'
-import { Network, PrismaClient } from '@prisma/client'
+//import { Network, PrismaClient } from '@prisma/client'
 import { ApiResponse } from '../data/ApiResponse'
 import { ObjectController } from '../data/ObjectController'
 import { sendError } from '../helpers/sendError'
 import { err } from '../middleware/errorHandler'
 
-class NetWorkResponse extends ApiResponse{
+/*class NetWorkResponse extends ApiResponse{
     public networks:Network[];
 
     constructor(code:Number, networks?:Network[]){
@@ -151,4 +151,4 @@ export async function create(req:Request, res:Response){
     catch(e){
         err(e,req,res);
     }
-}
+}*/

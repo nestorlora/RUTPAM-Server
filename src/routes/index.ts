@@ -7,14 +7,13 @@
  */
 
 import { Application } from "express";
-import { NetworkController } from '../controllers/networks'
+//import { NetworkController } from '../controllers/networks'
 import * as errors from "../controllers/errors"
 
 export default function(app:Application) {
 
     // TODO Add route /info
-    /*app.route('/info')*/
-    app.route('/networks')
+/*    app.route('/networks')
         .get(new NetworkController().findMany)
         .post(new NetworkController().createOne)
         .put(errors.methodNotAllowed)
@@ -36,5 +35,5 @@ export default function(app:Application) {
         .put(errors.notFound)
         .patch(errors.notFound)
         .delete(errors.notFound)
-        .head(errors.notFound);
+        .head(errors.notFound);*/
 }

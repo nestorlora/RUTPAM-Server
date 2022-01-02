@@ -7,20 +7,10 @@
  */
 
 import { Response, Request } from 'express'
-import { Prisma } from '@prisma/client'
+//import { Prisma } from '@prisma/client'
 import { sendError } from '../helpers/sendError'
-import { prismaHandler } from './prismaHandler'
+//import { prismaHandler } from './prismaHandler'
 
 export function err(err:any, req:Request, res:Response, next?:Function) {
-    if(
-        err instanceof Prisma.PrismaClientKnownRequestError ||
-        err instanceof Prisma.PrismaClientUnknownRequestError ||
-        err instanceof Prisma.PrismaClientRustPanicError ||
-        err instanceof Prisma.PrismaClientInitializationError ||
-        err instanceof Prisma.PrismaClientValidationError
-    ){
-        prismaHandler(err, req, res);
-    }else{
-        sendError(res,500);
-    }
+    sendError(res,500);
 }
