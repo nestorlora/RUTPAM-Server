@@ -7,13 +7,16 @@
  */
 
 'use strict'
+import fs from 'fs'
 import express from 'express';
 import cors from 'cors';
+import {routes} from "./routes/index.js";
 
 // Env Variables import
 import * as dotenv from 'dotenv';
 dotenv.config();
-const version:String = require('./../package.json').version;
+const packageConfig = JSON.parse(String(fs.readFileSync('./package.json')))
+const version:String = packageConfig.version;
 const port:String|Number = process.env.APP_PORT || 5000;
 const server_name:String = process.env.SERVER_NAME || "RUTPAM Server";
 const contact:String = process.env.SERVER_ADMIN || "";
@@ -32,6 +35,4 @@ app.use(express.json(), cors());
 app.listen(port, () => {
     console.log('RUTPAM-Server v' + version + ' listening on port ' + port)
 });
-
-import routes from "./routes/index";
 routes(app);

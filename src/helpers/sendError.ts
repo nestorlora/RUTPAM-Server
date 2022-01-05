@@ -7,7 +7,7 @@
  */
 
 import { Response } from 'express'
-import { ApiResponse } from '../data/ApiResponse'
+import { ApiResponse } from '../data/ApiResponse.js'
 
 export function sendError(res:Response, code:number, err?:string) {
     const data:ApiResponse = new ApiResponse(code, err);

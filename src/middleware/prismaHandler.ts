@@ -8,7 +8,7 @@
 
 import { Response, Request } from 'express'
 //import { Prisma } from '@prisma/client'
-import { sendError } from '../helpers/sendError'
+import { sendError } from '../helpers/sendError.js'
 
 /*export function prismaHandler(err:any, req:Request, res:Response, next?:Function) {
     if(err instanceof Prisma.PrismaClientKnownRequestError){

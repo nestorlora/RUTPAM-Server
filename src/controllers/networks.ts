@@ -8,10 +8,10 @@
 
 import { Response, Request } from 'express'
 //import { Network, PrismaClient } from '@prisma/client'
-import { ApiResponse } from '../data/ApiResponse'
-import { ObjectController } from '../data/ObjectController'
-import { sendError } from '../helpers/sendError'
-import { err } from '../middleware/errorHandler'
+import { ApiResponse } from '../data/ApiResponse.js'
+import { ObjectController } from '../data/ObjectController.js'
+import { sendError } from '../helpers/sendError.js'
+import { err } from '../middleware/errorHandler.js'
 
 /*class NetWorkResponse extends ApiResponse{
     public networks:Network[];

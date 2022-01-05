@@ -7,7 +7,7 @@
  */
 
 import { Response, Request } from 'express'
-import { sendError } from '../helpers/sendError'
+import { sendError } from '../helpers/sendError.js'
 
 export function notFound(req:Request, res:Response) {
     sendError(res, 404);

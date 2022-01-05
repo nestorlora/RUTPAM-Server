@@ -7,12 +7,11 @@
  */
 
 import { Application } from "express";
-import {InfoController} from '../controllers/info';
+import {InfoController} from '../controllers/info.js';
 //import { NetworkController } from '../controllers/networks'
 import * as errors from "../controllers/errors"
 
-export default function(app:Application) {
-
+export function routes(app:Application) {
     app.route('/info').get(new InfoController().getInfo);
 /*    app.route('/networks')
         .get(new NetworkController().findMany)

@@ -7,8 +7,8 @@
  */
 
 import { Response, Request } from 'express'
-import { sendError } from '../helpers/sendError'
-import { err as errorHandler } from '../middleware/errorHandler'
+import { sendError } from '../helpers/sendError.js'
+import { err as errorHandler } from '../middleware/errorHandler.js'
 
 /**
  * @abstract

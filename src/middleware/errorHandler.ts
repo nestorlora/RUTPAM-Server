@@ -8,7 +8,7 @@
 
 import { Response, Request } from 'express'
 //import { Prisma } from '@prisma/client'
-import { sendError } from '../helpers/sendError'
+import { sendError } from '../helpers/sendError.js'
 //import { prismaHandler } from './prismaHandler'
 
 export function err(err:any, req:Request, res:Response, next?:Function) {
